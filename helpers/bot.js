@@ -24,7 +24,8 @@ const handleVideoEvent = (channel, files = []) => {
 
       return gif
         .createFromSlackUrl(url)
-        .then(result => sendMessage(result, channel));
+        .then(result => sendMessage(result, channel))
+        .catch(err => console.log('Error uploading url:', url, err));
     });
 
   return Promise.all(promises);
