@@ -1,6 +1,7 @@
 const { WebClient } = require('@slack/client');
 const gif = require('./gif');
-const { SLACK_TOKEN, DEFAULT_SLACK_CHANNEL } = require('./utils');
+const twilio = require('./twilio');
+const { SLACK_TOKEN } = require('./utils');
 
 const web = new WebClient(SLACK_TOKEN);
 
@@ -39,11 +40,17 @@ const handleCallbackId = (callbackId, actions = []) => {
   }
 };
 
+const sendSms = (user, message = '') => {
+  return twilio.send(message, user)
+    .then(msg => console.log(`Successfully sent "${message}" to @${user}!`));
+};
+
 module.exports = {
   ping,
   getChannels,
   getIms,
   sendMessage,
   handleVideoEvent,
-  handleCallbackId
+  handleCallbackId,
+  sendSms
 };

@@ -9,9 +9,14 @@ module.exports = express()
     // Test that the bot is available
     return bot.ping().then(result => res.json({ ok: !!result.ok }));
   })
-  .post('/slash', (req, res) => {
-    // Placeholder in case we want to add slash commands
-    return res.send('Slash commands are the best!');
+  .post('/sms', (req, res) => {
+    const { text = '' } = req.body;
+    const [user, ...msg] = text.split(' ');
+    const message = msg.join(' ');
+
+    return bot.sendSms(user, message)
+      .then(() => res.send('Sent!'))
+      .catch(err => res.send(err && err.message));
   })
   .post('/component', (req, res) => {
     // Placeholder in case we want to add interactive components
